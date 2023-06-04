@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMultiMap>
+#include <QSet>
+#include "card.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,8 +22,13 @@ private slots:
     void on_pushButton_stand_clicked();
 
 private:
-    QMultiMap<QString, int> multiMap;
+    QList<Card> available_cards;
+    QList<Card> user_cards;
+    QList<Card> enemy_cards;
+
 private:
+    void update_cards();
+    void update_cards_on_hands();
     Ui::MainWindow *ui;
 };
 
