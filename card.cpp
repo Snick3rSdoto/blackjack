@@ -2,39 +2,11 @@
 #include <QPixmap>
 #include <QLabel>
 #include <QDebug>
-#include <QVBoxLayout>
 
 Card::Card(QObject *)
 {}
 
-Card::Card(QString suit, int rank): suit(suit), rank(rank)
-{}
-
-Card::Card(const Card &c): suit(c.suit), rank(c.rank)
-{}
-
-Card& Card::operator= (const Card& c)
-{
-    if (this == &c)
-        return *this;
-
-    this->suit = suit;
-    this->rank = rank;
-
-    return *this;
-}
-
-
-void swap(Card& c1, Card& c2)
-{
-    std::swap(c1.rank, c2.rank);
-    std::swap(c1.suit, c2.suit);
-}
-
-
-
-
-void Card::draw_card(QWidget *parent, int x, int y)
+Card::Card(QWidget* parent, QString suit, int rank): QWidget(parent), suit(suit), rank(rank)
 {
     int card_width = 167;
     int card_height = 243;
@@ -60,12 +32,25 @@ void Card::draw_card(QWidget *parent, int x, int y)
 
     QString url = "./images/cards.jpg";
     QPixmap card_pixmap(url);
-    QLabel *label = new QLabel(parent);
-    label->setPixmap(card_pixmap.copy(card_x, card_y, card_width, card_height));
-    label->setScaledContents(true);
-    label->resize(100, 150);
-    label->move(x, y);
+    card_img = new QLabel(parent);
+    card_img->setPixmap(card_pixmap.copy(card_x, card_y, card_width, card_height));
+    card_img->setScaledContents(true);
+    card_img->resize(100, 150);
+    card_img->hide();
 
-    label->show();
 }
 
+
+
+Card::~Card()
+{
+    this->card_img->deleteLater();
+}
+
+
+void Card::draw_card(int x, int y)
+{
+    this->card_img->move(x, y);
+    this->card_img->raise();
+    this->card_img->show();
+}

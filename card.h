@@ -3,28 +3,26 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QLabel>
 
 
 
-class Card : public QObject
+class Card : public QWidget
 {
     Q_OBJECT
 public:
     QString suit = "";
     int rank = 0;
+    QLabel* card_img;
 
 public:
     explicit Card(QObject *parent = nullptr);
-    Card(QString suit, int rank = 0);
-    Card(const Card& c);
-    Card& operator= (const Card& card);
-
-    // Needs to be implemented in order to use std::random_shuffle
-    friend void swap(Card& c1, Card& c2);
+    Card(QWidget* parent, QString suit, int rank = 0);
+    ~Card();
 
 
 public:
-    void draw_card(QWidget* parent, int x, int y);
+    void draw_card(int x, int y);
 
 
 signals:

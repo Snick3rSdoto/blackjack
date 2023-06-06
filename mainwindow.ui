@@ -22,28 +22,15 @@
      <rect>
       <x>683</x>
       <y>549</y>
-      <width>171</width>
-      <height>31</height>
+      <width>254</width>
+      <height>54</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton_stand">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButton_bet">
        <property name="text">
-        <string>STAND</string>
+        <string>BET</string>
        </property>
       </widget>
      </item>
@@ -60,10 +47,44 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton_stand">
+       <property name="text">
+        <string>STAND</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pushButton_stand_3">
+       <property name="text">
+        <string>BET</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="pushButton_continue">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>CONTINUE</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
-   <zorder>gridLayoutWidget</zorder>
-   <zorder>pushButton_hit</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
