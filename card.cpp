@@ -41,7 +41,6 @@ Card::Card(QWidget* parent, QString suit, int rank): QWidget(parent), suit(suit)
 }
 
 
-
 Card::~Card()
 {
     this->card_img->deleteLater();

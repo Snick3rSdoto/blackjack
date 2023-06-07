@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->update_cards();
-    this->update_hands();
+    this->update_balance();
 }
 
 MainWindow::~MainWindow()
@@ -23,14 +23,34 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_hit_clicked()
 {
-    if(hand < 21)
-    {
         this->user_pick_card();
+        while (hand > 21 && ace > 0) {
+            hand -= 10;
+            ace--;
+        }
+        qDebug() << hand;
+        if(hand == 21) {
+            qDebug() << "you won";
+            this->ui->pushButton_hit->setEnabled(false);
+            this->ui->pushButton_stand->setEnabled(false);
+            this->ui->pushButton_continue->setEnabled(true);
 
-        qDebug()<<hand;
-        if(hand == 21) {qDebug() << "you won"; }
-        else if (hand > 21) {qDebug() << "you lose";}
-    }
+            balance += betAmounts[currentBetIndex];
+            this->update_balance();
+            this->ui->pushButton_minusBet->setEnabled(true);
+            this->ui->pushButton_plusBet->setEnabled(true);
+        }
+        else if (hand > 21) {
+            qDebug() << "you lose";
+            this->ui->pushButton_hit->setEnabled(false);
+            this->ui->pushButton_stand->setEnabled(false);
+            this->ui->pushButton_continue->setEnabled(true);
+
+            balance -= betAmounts[currentBetIndex];
+            this->update_balance();
+            this->ui->pushButton_minusBet->setEnabled(true);
+            this->ui->pushButton_plusBet->setEnabled(true);
+        }
 }
 
 
@@ -39,40 +59,67 @@ void MainWindow::on_pushButton_stand_clicked()
     this->ui->pushButton_hit->setEnabled(false);
     this->ui->pushButton_stand->setEnabled(false);
     this->ui->pushButton_continue->setEnabled(true);
+    while (enemyHand > 21 && enemyAce > 0) {
+        enemyHand -= 10;
+        enemyAce--;
+    }
     while(true)
     {
 
-        if(enemyHand>hand && enemyHand < 22){
-            qDebug()<<"you lose";
+        if(enemyHand > hand && enemyHand < 22){
+            qDebug() << "you lose";
+            balance -= betAmounts[currentBetIndex];
+            this->update_balance();
+            this->ui->pushButton_minusBet->setEnabled(true);
+            this->ui->pushButton_plusBet->setEnabled(true);
             break;
         }
         else if (enemyHand == hand && enemyHand > 16) {
-            qDebug()<<"equal";
+            qDebug() << "push";
+            this->ui->pushButton_minusBet->setEnabled(true);
+            this->ui->pushButton_plusBet->setEnabled(true);
             break;
         }
-        else if (enemyHand>21){
-            qDebug()<<"you won";
+        else if (enemyHand > 21) {
+            qDebug() << "you won";
+            balance += betAmounts[currentBetIndex];
+            this->update_balance();
+            this->ui->pushButton_minusBet->setEnabled(true);
+            this->ui->pushButton_plusBet->setEnabled(true);
             break;
         }
         else if (enemyHand < hand && enemyHand > 16) {
-            qDebug()<<"you won";
+            qDebug() << "you won";
+            balance += betAmounts[currentBetIndex];
+            this->update_balance();
+            this->ui->pushButton_minusBet->setEnabled(true);
+            this->ui->pushButton_plusBet->setEnabled(true);
             break;
         }
 
         this->enemy_pick_card();
 
-        qDebug()<<enemyHand<<" en";
+        qDebug() << enemyHand << " en";
 
     }
 }
 
 void MainWindow::on_pushButton_continue_clicked()
 {
-    this->ui->pushButton_hit->setEnabled(true);
-    this->ui->pushButton_stand->setEnabled(true);
-    this->ui->pushButton_continue->setEnabled(false);
-    this->update_hands();
+    ace = 0;
+    enemyAce = 0;
+    if(balance>=betAmounts[currentBetIndex]) {
+        this->update_hands();
+        if (!this->check_blackJack()) {
+            this->ui->pushButton_hit->setEnabled(true);
+            this->ui->pushButton_stand->setEnabled(true);
+            this->ui->pushButton_continue->setEnabled(false);
+            this->ui->pushButton_minusBet->setEnabled(false);
+            this->ui->pushButton_plusBet->setEnabled(false);
+        }
 
+        qDebug() << hand << ' ' << enemyHand;
+    }
 }
 
 void MainWindow::update_cards()
@@ -101,7 +148,7 @@ void MainWindow::update_cards()
 
 void MainWindow::update_hands()
 {
-    qDebug()<<hand;
+    qDebug() << "----";
     for(auto c: this->user_cards) {delete c;}
     for(auto c: this->enemy_cards) {delete c;}
 
@@ -110,13 +157,20 @@ void MainWindow::update_hands()
     this->user_pick_card();
     this->user_pick_card();
 
-
     this->enemy_cards.clear();
     this->enemyHand = 0;
     this->enemy_pick_card();
     this->enemy_pick_card();
 
 }
+
+
+void MainWindow::update_balance()
+{
+    QString strbBal = QString::number(balance);
+    ui->label_balance->setText(strbBal);
+}
+
 
 void MainWindow::user_pick_card()
 {
@@ -126,39 +180,71 @@ void MainWindow::user_pick_card()
 
     Card *card = this->available_cards.takeLast();
 
-    hand += card->rank;
+    if (card->rank == 1) {
+        hand += 11;
+        ace++;
+    }
+    else { hand += card->rank; }
+
     card->draw_card(posCard, 400);
 
     user_cards.append(card);
+
 }
+
 
 void MainWindow::enemy_pick_card()
 {
-    if (this->available_cards.isEmpty())  { this->update_cards(); }
+    if (this->available_cards.isEmpty()) { this->update_cards(); }
 
     int posCard = 400 + 30 * this->enemy_cards.size();
 
     Card *card = this->available_cards.takeLast();
 
-    enemyHand += card->rank;
+    if (card->rank == 1) {
+        enemyHand += 11;
+        enemyAce++;
+    }
+    else { enemyHand += card->rank; }
+
     card->draw_card(posCard, 50);
 
     enemy_cards.append(card);
 }
 
 
+void MainWindow::on_pushButton_minusBet_clicked()
+{
+    if(currentBetIndex > 0)
+        currentBetIndex--;
+    QString strBet = QString::number(betAmounts[currentBetIndex]);
+    ui->label_bet->setText(strBet);
+}
 
 
+void MainWindow::on_pushButton_plusBet_clicked()
+{
+    if(currentBetIndex < 4)
+        currentBetIndex++;
+    QString strBet = QString::number(betAmounts[currentBetIndex]);
+    ui->label_bet->setText(strBet);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+bool MainWindow::check_blackJack()
+{
+    if(hand == 21 && enemyHand == 21) {
+        qDebug() << "push";
+        return true;
+    }
+    else if (hand == 21) {
+        qDebug() << "plaeyr has blackJack";
+        balance += betAmounts[currentBetIndex];
+        return true;
+    }
+    else if (enemyHand == 21) {
+        qDebug() << "diller had blackJack";
+        balance -= betAmounts[currentBetIndex];
+        return true;
+    }
+    return false;
+}
