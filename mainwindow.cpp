@@ -4,12 +4,25 @@
 #include <QString>
 #include <QDebug>
 #include <random>
+#include <QMediaPlayer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
+
+    QMediaPlayer *player = new QMediaPlayer;
+
+//    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+//    player->setMedia(QUrl::fromLocalFile("/home/snick3rsdoto/blackjack/music/background.mp3"));
+    player->setMedia(QUrl(":/music/background.mp3"));
+    player->setVolume(50);
+    player->play();
+
+    Card *deck = new Card(this, "back");
+    deck->draw_card(800, 20);
 
     this->update_cards();
     this->update_balance();
@@ -239,11 +252,13 @@ bool MainWindow::check_blackJack()
     else if (hand == 21) {
         qDebug() << "plaeyr has blackJack";
         balance += betAmounts[currentBetIndex];
+        this->update_balance();
         return true;
     }
     else if (enemyHand == 21) {
         qDebug() << "diller had blackJack";
         balance -= betAmounts[currentBetIndex];
+        this->update_balance();
         return true;
     }
     return false;

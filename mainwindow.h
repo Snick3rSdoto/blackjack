@@ -17,7 +17,7 @@ public:
 private:
     int hand = 0, enemyHand = 0;
     int ace = 0, enemyAce = 0;
-    int balance = 100;
+    int balance = 50000;
     int currentBetIndex = 0;
     const int betAmounts[5] = {5, 10, 25, 50, 100};
 

@@ -71,7 +71,7 @@
         </size>
        </property>
        <property name="text">
-        <string>CONTINUE</string>
+        <string>BET</string>
        </property>
       </widget>
      </item>
@@ -129,9 +129,36 @@
      <string>5</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>981</width>
+      <height>641</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/images/table.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>label</zorder>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>label_balance</zorder>
+   <zorder>pushButton_minusBet</zorder>
+   <zorder>pushButton_plusBet</zorder>
+   <zorder>label_bet</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
