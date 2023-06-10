@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QDebug>
 #include <QLabel>
-
+#include <QPropertyAnimation>
+#include <QPointer>
 
 
 class Card : public QWidget
@@ -14,6 +15,7 @@ public:
     QString suit = "";
     int rank = 0;
     QLabel* card_img;
+    QPropertyAnimation* animation;
 
 public:
     explicit Card(QObject *parent = nullptr);
@@ -23,10 +25,6 @@ public:
 
 public:
     void draw_card(int x, int y);
-
-
-signals:
-
 };
 
 #endif // CARD_H

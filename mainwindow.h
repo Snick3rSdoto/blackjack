@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 #include "card.h"
+#include <QMediaPlayer>
+#include <QPointer>
+
+const int DECK_X = 800;
+const int DECK_Y = 20;
+
 namespace Ui {
 class MainWindow;
 }
@@ -13,6 +19,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+
     ~MainWindow();
 private:
     int hand = 0, enemyHand = 0;
@@ -20,6 +27,8 @@ private:
     int balance = 50000;
     int currentBetIndex = 0;
     const int betAmounts[5] = {5, 10, 25, 50, 100};
+    QPointer<QMediaPlayer> player;
+    Ui::MainWindow *ui;
 
 private slots:
     void on_pushButton_hit_clicked();
@@ -32,18 +41,23 @@ private slots:
     bool check_blackJack();
 
 private:
-    QList<Card*> available_cards;
-    QList<Card*> user_cards;
-    QList<Card*> enemy_cards;
+    QList<QSharedPointer<Card>> available_cards;
+    QList<QSharedPointer<Card>> user_cards;
+    QList<QSharedPointer<Card>> enemy_cards;
+    QPointer<QLabel> winLabel;
+    QPointer<QLabel> loseLabel;
 
 private:
+    void win();
+    void lose();
+
     void update_cards();
     void update_hands();
     void update_balance();
 
     void user_pick_card();
     void enemy_pick_card();
-    Ui::MainWindow *ui;
+    void enemy_pick_back();
 };
 
 #endif // MAINWINDOW_H

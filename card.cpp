@@ -2,6 +2,11 @@
 #include <QPixmap>
 #include <QLabel>
 #include <QDebug>
+#include <QPropertyAnimation>
+#include "mainwindow.h"
+#include <chrono>
+#include <thread>
+
 
 Card::Card(QObject *)
 {}
@@ -38,18 +43,34 @@ Card::Card(QWidget* parent, QString suit, int rank): QWidget(parent), suit(suit)
     card_img->resize(100, 150);
     card_img->hide();
 
+
+    animation = new QPropertyAnimation(this->card_img, "pos");
+    animation->setDuration(500);
 }
+
+
+
 
 
 Card::~Card()
 {
+//    animation->setStartValue(this->card_img->pos());
+//    animation->setEndValue(QPoint(-100, 0));
+//    animation->start();
+
     this->card_img->deleteLater();
+    this->animation->deleteLater();
 }
 
 
 void Card::draw_card(int x, int y)
 {
-    this->card_img->move(x, y);
+
+    animation->setStartValue(QPoint(DECK_X, DECK_Y));
+    animation->setEndValue(QPoint(x, y));
+    animation->start();
+
     this->card_img->raise();
     this->card_img->show();
 }
+
