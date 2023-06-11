@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include "card.h"
 #include <QMediaPlayer>
-#include <QPointer>
 
 const int DECK_X = 800;
 const int DECK_Y = 20;

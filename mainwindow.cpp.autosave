@@ -3,6 +3,7 @@
 
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -53,7 +54,7 @@ void MainWindow::on_pushButton_hit_clicked()
             hand -= 10;
             ace--;
         }
-        qDebug() << hand;
+//        qDebug() << hand;
         if(hand == 21) {
             this->win();
             this->ui->pushButton_hit->setEnabled(false);
@@ -130,7 +131,7 @@ void MainWindow::on_pushButton_stand_clicked()
 
         this->enemy_pick_card();
 
-        qDebug() << enemyHand << " en";
+//        qDebug() << enemyHand << " en";
 
     }
 }
@@ -151,7 +152,7 @@ void MainWindow::on_pushButton_continue_clicked()
             this->ui->pushButton_plusBet->setEnabled(false);
         }
 
-        qDebug() << hand << ' ' << enemyHand;
+//        qDebug() << hand << ' ' << enemyHand;
     }
 }
 

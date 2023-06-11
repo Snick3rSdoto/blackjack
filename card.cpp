@@ -1,11 +1,7 @@
 #include "card.h"
-#include <QPixmap>
-#include <QLabel>
-#include <QDebug>
-#include <QPropertyAnimation>
 #include "mainwindow.h"
-#include <chrono>
-#include <thread>
+
+
 
 
 Card::Card(QObject *)

@@ -1,11 +1,5 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <QLabel>
-#include <QPushButton>
-#include <QMultiMap>
-#include <QString>
-#include <QDebug>
-#include <ctime>
 
 int main(int argc, char *argv[])
 {
